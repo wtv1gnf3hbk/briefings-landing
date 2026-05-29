@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bureau Briefings</title>
+  <meta name="description" content="Auto-generated daily news briefings for NYT bureaus and beats. Built by Adam Pasick.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.55;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      background: #fafafa;
+      color: #1a1a1a;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+    }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 700;
+      font-size: 2.25rem;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+    .lede {
+      font-size: 1.05rem;
+      color: #333;
+      max-width: 680px;
+      margin-bottom: 14px;
+    }
+    .meta {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.82rem;
+      color: #666;
+    }
+    .meta a {
+      color: #555;
+      border-bottom: 1px solid #bbb;
+      text-decoration: none;
+    }
+    .meta a:hover { color: #000; border-bottom-color: #000; }
+
+    /* Section headers */
+    h2 {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 600;
+      margin: 32px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    h2:first-of-type { margin-top: 0; }
+
+    /* Card grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.12s, box-shadow 0.12s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      border-color: #999;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .card h3 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.005em;
+    }
+    .card .beat {
+      font-size: 0.92rem;
+      color: #333;
+      margin-bottom: 10px;
+      flex-grow: 1;
+    }
+    .card .footer {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.74rem;
+      color: #666;
+      line-height: 1.5;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+    .card .footer .row { display: block; }
+    .card .footer .label { color: #999; }
+
+    /* Status pill */
+    .pill {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pill-live { background: #e8f3eb; color: #1f6a3a; }
+    .pill-stale { background: #fdecea; color: #a83a2c; }
+    .pill-paused { background: #f0e7f7; color: #5e3a87; }
+    .pill-proto { background: #fff4d6; color: #7a5a00; }
+
+    /* About section */
+    .about {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #ddd;
+      max-width: 680px;
+    }
+    .about h2 { margin-top: 0; }
+    .about p {
+      font-size: 0.95rem;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .about a {
+      color: #1a1a1a;
+      border-bottom: 1px solid #999;
+      text-decoration: none;
+    }
+    .about a:hover { border-bottom-color: #000; }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid #e5e5e5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.78rem;
+      color: #888;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 24px 16px 60px; }
+      h1 { font-size: 1.75rem; }
+      .lede { font-size: 1rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Adam Pasick · New York Times</div>
+  <h1>Bureau Briefings</h1>
+  <p class="lede">A fleet of auto-generated daily news briefings, each tuned to a specific NYT bureau or beat. Sources are scraped on schedule, stories synthesized into wire-service prose with Claude, validated against style rules, and published to GitHub Pages.</p>
+  <p class="meta">13 briefings · Updated continuously · <a href="https://github.com/wtv1gnf3hbk">github.com/wtv1gnf3hbk</a></p>
+</header>
+
+<h2>Asia</h2>
+<div class="grid">
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/japan-briefing/">
+    <div class="card-head">
+      <h3>Japan</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Tokyo Bureau briefing on Japan and the Korean peninsula. Politics, business, regional security.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Bureau chief ·</span> Javier Hernandez</span>
+      <span class="row"><span class="label">Cadence ·</span> Daily, 5am JST</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/china-briefing/">
+    <div class="card-head">
+      <h3>China</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Mainland, Hong Kong, Taiwan and the Chinese-speaking diaspora. Explicit lens-switching across state media, commercial outlets, HK independent press, and social signals.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> Daily, 6am ET</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/afpak-briefing/">
+    <div class="card-head">
+      <h3>Afghanistan / Pakistan</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Daily AfPak briefing covering Taliban governance, regional security, cross-border developments. Four format variants (merged, split, bullets, paragraphs).</div>
+    <div class="footer">
+      <span class="row"><span class="label">Bureau chief ·</span> Elian Peltier</span>
+      <span class="row"><span class="label">Cadence ·</span> Daily, 6am PKT</span>
+    </div>
+  </a>
+
+</div>
+
+<h2>Americas</h2>
+<div class="grid">
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/news-briefing/">
+    <div class="card-head">
+      <h3>World</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Global news briefing — Adam's personal daily digest, written for a foreign-desk editor's morning read.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Editor ·</span> Adam Pasick</span>
+      <span class="row"><span class="label">Cadence ·</span> Daily, 6am ET</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/canada-briefing/">
+    <div class="card-head">
+      <h3>Canada</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Skews regional over federal. Francophone roundup in French. Each regional item cites a source from its province.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> Twice daily (AM/PM)</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/latam-briefing/">
+    <div class="card-head">
+      <h3>Mexico / Central America / Caribbean</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Live wire of ~110 regional sources plus a synthesized briefing twice daily. Spanish-original headlines preserved; no auto-translation.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> 6am + 2pm CDMX</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/south-america-briefing/">
+    <div class="card-head">
+      <h3>South America</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Argentina, Bolivia, Brazil, Chile, Colombia, Ecuador, Guyana, Paraguay, Peru, Suriname, Uruguay, Venezuela, plus Trinidad &amp; Tobago. Live wire of ~150 sources plus a synthesized briefing twice daily.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> 6am + 2pm BRT</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/twin-cities-briefing/">
+    <div class="card-head">
+      <h3>Twin Cities</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Daily metro briefing on the Twin Cities (80%) and Greater Minnesota (20%), read by national-desk colleagues. Local news judgment, not a national-significance filter.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> Daily, 6am CST</span>
+    </div>
+  </a>
+
+</div>
+
+<h2>Europe</h2>
+<div class="grid">
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/dach-digest/">
+    <div class="card-head">
+      <h3>DACH Digest</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Berlin Bureau briefing covering Germany, Austria, and Switzerland. Politics, economy, regional press read across all three countries.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Bureau chief ·</span> Jim Tankersley</span>
+      <span class="row"><span class="label">Cadence ·</span> Daily, 6:30am CEST (+ PM updates)</span>
+    </div>
+  </a>
+
+</div>
+
+<h2>Middle East</h2>
+<div class="grid">
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/levant-briefing/">
+    <div class="card-head">
+      <h3>Levant</h3>
+      <span class="pill pill-live">Live</span>
+    </div>
+    <div class="beat">Daily Syria / Lebanon / Levant briefing covering political transitions, displacement, and regional conflict spillover.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Bureau chief ·</span> Abdi Latif Dahir</span>
+      <span class="row"><span class="label">Cadence ·</span> Daily</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/gulf-briefing/">
+    <div class="card-head">
+      <h3>Gulf</h3>
+      <span class="pill pill-proto">Prototype</span>
+    </div>
+    <div class="beat">Live wire of Gulf states coverage — Saudi Arabia, UAE, Qatar, Kuwait, Bahrain, Oman. Pre-editorial review.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> Continuous feed</span>
+    </div>
+  </a>
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/iran-briefing/">
+    <div class="card-head">
+      <h3>Iran</h3>
+      <span class="pill pill-proto">Prototype</span>
+    </div>
+    <div class="beat">Live feed aggregating Persian Telegram, OSINT (NetBlocks, HRANA, IranWire), Persian independent media, and wires. Persian headlines auto-translated.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Cadence ·</span> Continuous feed</span>
+    </div>
+  </a>
+
+</div>
+
+<h2>Paused</h2>
+<div class="grid">
+
+  <a class="card" href="https://wtv1gnf3hbk.github.io/russell-briefing/">
+    <div class="card-head">
+      <h3>Russell's Briefing</h3>
+      <span class="pill pill-paused">Paused</span>
+    </div>
+    <div class="beat">All-bullets international briefing for Russell Goldman. Currently paused.</div>
+    <div class="footer">
+      <span class="row"><span class="label">Editor ·</span> Russell Goldman</span>
+      <span class="row"><span class="label">Status ·</span> Workflow disabled</span>
+    </div>
+  </a>
+
+</div>
+
+<section class="about">
+  <h2>How they work</h2>
+  <p>Each briefing is its own GitHub repository. A scheduled GitHub Action scrapes a curated list of regional sources, sends the raw items to Claude with bureau-specific style rules, runs the draft through a validator script that catches banned phrases, missing attribution, and structural drift, then publishes the result to GitHub Pages. A refresh button on each page triggers a fresh build on demand.</p>
+  <p>A management layer monitors all 13 repos every two hours, applies known-pattern fixes when trusted recipes match, and escalates novel failures.</p>
+</section>
+
+<footer>
+  Built by Adam Pasick · Source on <a href="https://github.com/wtv1gnf3hbk" style="color:#888; border-bottom: 1px solid #ccc; text-decoration: none;">GitHub</a>
+</footer>
+
+</body>
+</html>
